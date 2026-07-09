@@ -1,0 +1,10 @@
+config.yaml
+*.p8
+data/
+thumb_cache/
+identity.json
+*.db
+__pycache__/
+*.pyc
+.venv/
+.env

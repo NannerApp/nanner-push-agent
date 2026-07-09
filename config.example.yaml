@@ -1,0 +1,48 @@
+# Nanner push AGENT configuration.
+#
+# The agent is what SELF-HOSTERS run. It subscribes to Frigate's MQTT and forwards alerts to the
+# publisher's push gateway over an OUTBOUND HTTPS call, so it needs no Apple account, no TLS
+# certificate, and no inbound ports for push to work.
+#
+# On first start it generates its own identity and prints a "pairing code", paste that into the
+# Nanner app to link your phone to this agent or just scan the QR code.
+#
+# Copy to config.yaml and fill in.
+
+# Where this agent's identity is persisted (agent id + pairing secret). Keep it stable so the
+# pairing code doesn't change across restarts.
+state_file: "./identity.json"
+
+# REQUIRED: this agent's own address, reachable BY YOUR PHONE (LAN or Tailscale). The app registers
+# its device and notification filters directly with the agent here, and the extension fetches
+# thumbnails from it. A Tailscale address works well
+# plain-HTTP or self-signed is fine, the app is built to accept them.
+public_base_url: "http://10.0.1.50:8421"
+
+# Local HTTP server for registration and the thumbnail endpoint.
+http:
+  host: "0.0.0.0"
+  port: 8421
+
+# Frigate's MQTT broker (the agent runs on your LAN, alongside Frigate).
+mqtt:
+  host: "10.0.1.96"
+  port: 1883
+  username: null
+  password: null
+  tls: false
+  reviews_topic: "frigate/reviews"
+
+# Frigate HTTP API — used only to fetch thumbnails (when public_base_url is set).
+frigate:
+  base_url: "https://10.0.1.96:8971"
+  user: null
+  password: null
+  verify_tls: false
+
+# Per-device severity/camera/object filters are configured from the app and stored on this agent
+# not here. These are agent-wide knobs only.
+notify:
+  types: ["new"]               # review lifecycle events to act on
+  per_camera_cooldown: 20      # per-device, per-camera throttle
+  thumbnails: true             # include a thumbnail URL (requires public_base_url)

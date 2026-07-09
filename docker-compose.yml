@@ -1,0 +1,15 @@
+services:
+  agent:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8421:8421"          # registration + thumbnail endpoint (reachable by your phone)
+    volumes:
+      - ./data:/data         # identity.json + devices.db + thumb_cache
+      - ./config:/config     # config.yaml
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8421/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
