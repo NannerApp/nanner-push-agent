@@ -43,8 +43,9 @@ from .registry import Device, Registry
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
 log = logging.getLogger("agent")
 
-# event_id comes from MQTT and URL paths — restrict to safe characters before use in paths/URLs
-_SAFE_EVENT_ID = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
+# Frigate event IDs commonly contain a period (for example, a timestamp followed by a suffix).
+# Slashes remain excluded so an ID cannot escape the thumbnail cache directory or URL segment.
+_SAFE_EVENT_ID = re.compile(r"^[a-zA-Z0-9_.-]{1,128}$")
 _MAX_CONCURRENT_PUSHES = 2
 _MQTT_RECONNECT_MIN_SECONDS = 5.0
 _MQTT_RECONNECT_MAX_SECONDS = 60.0

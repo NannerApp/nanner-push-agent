@@ -17,7 +17,8 @@ from .config import FrigateConfig
 
 log = logging.getLogger("agent.frigate")
 
-_SAFE_EVENT_ID = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
+# Frigate event IDs commonly contain a period; path separators and other unsafe characters do not.
+_SAFE_EVENT_ID = re.compile(r"^[a-zA-Z0-9_.-]{1,128}$")
 
 
 class FrigateClient:
