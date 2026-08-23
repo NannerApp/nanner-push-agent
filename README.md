@@ -1,8 +1,8 @@
-# Nanner Push Agent
+# Nanner Push Agent [BETA]
 
 The **self-hosted** core of Nanner notifications. It owns your notification preferences (they never leave your network), watches Frigates MQTT events, decides what to notify,
 composes each notification, and forwards ready-made payloads to the publisher's **push gateway**
-(the `nanner-push-gateway` service), which is a dumb APNs relay. 
+(the `nanner-push-gateway` service), which is a dumb APNs relay. This feature is in beta and may change, requiring client updates and push agent updates. Don't expect a set and forget solution until the stable release.
 
 **You will need to have MQTT set up for your Frigate instance and an MQTT broker.**
 
